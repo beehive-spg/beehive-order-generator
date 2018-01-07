@@ -1,8 +1,5 @@
 FROM node:latest
 
-#ARG node_env=production
-#ENV NODE_ENV=$node_env
-
 WORKDIR /app
 
 COPY package.json .
