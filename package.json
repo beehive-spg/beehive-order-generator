@@ -5,10 +5,12 @@
   "author": "Michael Bartl <astwys@gmail.com>",
   "license": "MIT",
   "scripts": {
-  	"start": "nodemon src/index.js -x babel-node",
-	"build": "npx babel src -d lib"
+    "start": "nodemon src/index.js -x babel-node",
+    "build": "npx babel src -d lib"
   },
   "dependencies": {
+    "dotenv": "^4.0.0",
+    "fs-extra": "^5.0.0",
     "jackrabbit": "^4.3.0"
   },
   "devDependencies": {
