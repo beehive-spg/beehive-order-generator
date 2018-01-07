@@ -1,0 +1,19 @@
+{
+  "name": "beehive-generator",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "Michael Bartl <astwys@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+  	"start": "nodemon src/index.js -x babel-node",
+	"build": "npx babel src -d lib"
+  },
+  "dependencies": {
+    "jackrabbit": "^4.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "nodemon": "^1.14.8"
+  }
+}
