@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon src/index.js -x babel-node",
-    "build": "npx babel src -d lib"
+    "build": "npx babel src -d lib --copy-files"
   },
   "dependencies": {
     "dotenv": "^4.0.0",
