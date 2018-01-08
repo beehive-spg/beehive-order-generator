@@ -13,10 +13,7 @@ const newOrder = hives => {
 	const { from, to } = generateOrder(hives)
 	const order = {
 		from: from.id,
-		to: {
-			location: to.location,
-			coordinates: to.coordinates,
-		},
+		to: to.id,
 	}
 	sendOrder(order)
 }
