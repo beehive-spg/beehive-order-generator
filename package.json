@@ -11,7 +11,8 @@
   "dependencies": {
     "dotenv": "^4.0.0",
     "fs-extra": "^5.0.0",
-    "jackrabbit": "^4.3.0"
+    "jackrabbit": "^4.3.0",
+    "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
