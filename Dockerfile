@@ -1,13 +1,13 @@
-FROM node:latest
+FROM python:3
 
-WORKDIR /app
+RUN mkdir -p /beehive-order-generator
 
-COPY package.json .
+COPY /src /beehive-order-generator/src
+COPY requirements.txt /beehive-order-generator
+COPY .env /beehive-order-generator
 
-RUN npm install --production
+RUN pip3 install -r beehive-order-generator/requirements.txt
 
-COPY ./lib .
+WORKDIR /beehive-order-generator/src
 
-RUN ls
-
-CMD node index.js
+ENTRYPOINT [ "python3", "order-generator.py", "sendsaved", "0" ]
