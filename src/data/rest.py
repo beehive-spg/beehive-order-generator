@@ -28,5 +28,5 @@ def post_customer(customer):
     return customer_response.json()
 
 def url(route):
-    host = os.environ.get('DB_URL', os.environ['DBURL'])
+    host = os.getenv('DBURL')
     return host + route
