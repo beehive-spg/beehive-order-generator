@@ -1,16 +1,16 @@
 import sys, os, logging, requests, random
 from faker import Faker
-import service
-from data import rest, writer
+from service import domainservice, locationservice
+from data import rest, operator
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
-    format='%(asctime)s - %(name)-5s- %(levelname)-5s- %(message)s')
+    format='%(asctime)s - %(levelname)-5s - %(message)s')
 
 def generate_orders(amount):
-    writer.write_orders_to_file(get_orders(amount, get_locations(amount)))
+    operator.write_orders_to_file(get_orders(amount, get_locations(amount)))
 
 def generate_locations(amount):
-    writer.write_locations_to_file(get_locations(amount))
+    operator.write_locations_to_file(get_locations(amount))
 
 def get_orders(amount, locations):
     names = get_random_names(amount)
@@ -20,16 +20,16 @@ def get_orders(amount, locations):
         print(locations[0][i])
         print(locations[1][i])
         print(locations[2][i])
-        customer = service.get_customerdomain_by_attributes(names[i], locations[0][i], locations[1][i], locations[2][i])
-        customer = service.get_customerdomain(rest.post_customer(customer))
-        _to = customer.customer[0].id
+        customer = domainservice.get_customerdomain_by_attributes(names[i], locations[0][i], locations[1][i], locations[2][i])
+        customer = domainservice.get_customerdomain(rest.post_customer(customer))
+        _to = customer
         _from = get_shop()
 
-        order = []
-        order.append(_from)
-        order.append(_to)
+        order = dict()
+        order['from'] = _from
+        order['to'] = _to
         orders.append(order)
-        logging.info("Created order from: " + str(_to) + " to: " + str(_from))
+        logging.info("Created order from: " + str(_to.id) + " to: " + str(_from.shop[0].id))
     return orders
 
 def get_random_names(amount):
@@ -41,11 +41,11 @@ def get_random_names(amount):
     return names
 
 def get_locations(amount):
-    all_buildings = service.get_all_buildings()
-    upper_x = service.get_upper_x(all_buildings)
-    upper_y = service.get_upper_y(all_buildings)
-    lower_x = service.get_lower_x(all_buildings)
-    lower_y = service.get_lower_y(all_buildings)
+    all_hives = domainservice.get_all_hives()
+    upper_x = locationservice.get_upper_x(all_hives)
+    upper_y = locationservice.get_upper_y(all_hives)
+    lower_x = locationservice.get_lower_x(all_hives)
+    lower_y = locationservice.get_lower_y(all_hives)
 
     addresses = []
     xcoords = []
@@ -53,6 +53,12 @@ def get_locations(amount):
     for i in range(0, amount):
         lon = random.uniform(lower_x, upper_x)
         lat = random.uniform(lower_y, upper_y)
+        while (not locationservice.is_reachable(lon, lat)):
+            logging.info("Regenerate out of range location")
+            lon = random.uniform(lower_x, upper_x)
+            lat = random.uniform(lower_y, upper_y)
+
+        logging.info("Generated location")
 
         address = rest.get_address(lon, lat)
 
@@ -65,13 +71,10 @@ def get_locations(amount):
     locations.append(xcoords)
     locations.append(ycoords)
 
-    logging.info("Saving generated locations to file.")
-    writer.write_locations_to_file(locations)
-
     return locations
 
 def get_shop():
-    shops = service.get_all_shops()
+    shops = domainservice.get_all_shops()
     random_shop = random.randint(0, len(shops)-1)
     chosen_shop = shops[random_shop]
-    return chosen_shop.shop[0].id
+    return chosen_shop

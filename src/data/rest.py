@@ -10,13 +10,17 @@ def get_address(lon, lat):
 	address_response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(lat) + ","+ str(lon) +"&key=" + apiKey)
 	return address_response.json()['results'][0]['formatted_address']
 
-def get_all_buildings_json():
+def get_all_hives_json():
     hives = requests.get(url("/hives"))
     return hives.json()
 
 def get_all_shops_json():
     shops = requests.get(url("/shops"))
     return shops.json()
+
+def get_drone_types_json():
+    types = requests.get(url("/types"))
+    return types.json()
 
 def post_customer(customer):
     postcustomer = dict()

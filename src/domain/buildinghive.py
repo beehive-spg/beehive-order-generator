@@ -3,7 +3,7 @@ from schematics.types import IntType, StringType, FloatType
 from schematics.types.compound import ModelType
 from domain.hive import Hive
 
-class Building(Model):
+class BuildingHive(Model):
     id = IntType(required=True, serialized_name='db/id')
     address = StringType(serialize_when_none=False, serialized_name='building/address')
     xcoord = FloatType(serialize_when_none=False, serialized_name='building/xcoord')
