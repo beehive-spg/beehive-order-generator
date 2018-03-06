@@ -16,7 +16,8 @@ def write_orders_to_file(orders):
             else:
                 append_orders(orders)
     except FileNotFoundError:
-    	write_locations(locations)
+        open(ORDERFILE, 'w')
+        write_orders_to_file(orders)
 
 def write_orders(orders):
     with open(ORDERFILE, 'w') as file:
