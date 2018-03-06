@@ -16,6 +16,7 @@ def get_customerdomain_by_attributes(name, address, xcoord, ycoord):
     return customer
 
 def get_customerdomain(json):
+    print(json)
     customer = BuildingCustomer(json)
     customer.validate()
     return customer
@@ -29,7 +30,6 @@ def get_all_hives():
     return hives
 
 def get_hivedomain(json):
-    print(json)
     hive = BuildingHive(json)
     hive.validate()
     return hive

@@ -77,4 +77,9 @@ def get_shop():
     shops = domainservice.get_all_shops()
     random_shop = random.randint(0, len(shops)-1)
     chosen_shop = shops[random_shop]
+    logging.info("Generate shop")
+    while (not locationservice.is_reachable(chosen_shop.xcoord, chosen_shop.ycoord)):
+            logging.info("Regenerate out of range shop")
+            random_shop = random.randint(0, len(shops)-1)
+            chosen_shop = shops[random_shop]
     return chosen_shop
