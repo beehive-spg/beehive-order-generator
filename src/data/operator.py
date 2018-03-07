@@ -66,7 +66,7 @@ def send_orders_from_file(amount):
                 order['from'] = str(l[3])
                 order['to'] = str(customer.customer[0].id)
                 publisher.send(json.dumps(order))
-                time.sleep(random.randint(1, 4))
+                time.sleep(random.randint(4, 8))
             if (iteration%30 == 0 and iteration > 0):
                 time.sleep(30)
     file.close()
