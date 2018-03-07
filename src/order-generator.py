@@ -12,6 +12,10 @@ python3 order_generator.py send #number
 def main():
     command = sys.argv[1]
     amount = int(sys.argv[2])
+    try:
+        time.sleep(int(sys.argv[3]))
+    except:
+        logging.info("Starting without a timeout")
     if (command == 'generate'):
         logging.info("Starting to generate " + str(amount) +" orders...")
         generator.generate_orders(amount)

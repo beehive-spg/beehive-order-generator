@@ -3,7 +3,8 @@ from geopy.distance import vincenty
 from data import rest
 from service import domainservice
 
-MAXDISTANCE = ( (rest.get_drone_types_json()[0]['dronetype/range'] / 1000) / 2) *0.92
+#MAXDISTANCE = ( (rest.get_drone_types_json()[0]['dronetype/range'] / 1000) / 2) *0.92
+MAXDISTANCE = 2500 * 0.92
 
 def is_reachable(lon, lat):
     all_hives = domainservice.get_all_hives()
