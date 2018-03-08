@@ -80,5 +80,6 @@ def create_customer(customer):
     except:
         logging.info("post crashed")
         logging.info(str(l))
+        time.sleep(4)
         create_customer(customer)
     return customer
