@@ -21,7 +21,8 @@ def main():
         generator.generate_orders(amount)
     elif (command == 'send'):
         logging.info("Sending" + str(amount) + " orders from file...")
-        operator.send_orders_from_file(amount)
+        while (True):
+            operator.send_orders_from_file(amount)
 
 if __name__ == '__main__':
     main()

@@ -60,8 +60,11 @@ def send_orders_from_file(amount):
             if (iteration != 0):
                 l = line.split("\t")
                 l[3] = l[3].strip("\n")
+                logging.info("file content:")
+                logging.info(str(l))
                 customer = domainservice.get_customerdomain_by_attributes(generator.get_random_names(1)[0], l[0], float(l[1]), float(l[2]))
-                customer = domainservice.get_customerdomain(rest.post_customer(customer))
+                customer = create_customer(customer)
+
                 order = dict()
                 order['from'] = str(l[3])
                 order['to'] = str(customer.customer[0].id)
@@ -70,3 +73,12 @@ def send_orders_from_file(amount):
             if (iteration%30 == 0 and iteration > 0):
                 time.sleep(30)
     file.close()
+
+def create_customer(customer):
+    try:
+        customer = domainservice.get_customerdomain(rest.post_customer(customer))
+    except:
+        logging.info("post crashed")
+        logging.info(str(l))
+        create_customer(customer)
+    return customer
