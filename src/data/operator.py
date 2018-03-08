@@ -76,10 +76,13 @@ def send_orders_from_file(amount):
 
 def create_customer(customer):
     try:
-        customer = domainservice.get_customerdomain(rest.post_customer(customer))
+        customer_p = domainservice.get_customerdomain(rest.post_customer(customer))
     except:
         logging.info("post crashed")
-        logging.info(str(l))
+        logging.info("tried to send customer: ")
+        logging.info(customer.to_primitive())
         time.sleep(4)
+        logging.info("retry to send customer: ")
+        logging.info(customer.to_primitive())
         create_customer(customer)
-    return customer
+    return customer_p
