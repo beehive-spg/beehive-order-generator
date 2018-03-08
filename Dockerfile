@@ -10,4 +10,4 @@ RUN pip3 install -r beehive-order-generator/requirements.txt
 
 WORKDIR /beehive-order-generator/src
 
-ENTRYPOINT [ "python3", "order-generator.py", "send", "10", "20" ]
+ENTRYPOINT [ "python3", "order-generator.py", "send", "100", "20" ]

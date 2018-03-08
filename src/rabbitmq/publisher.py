@@ -11,7 +11,7 @@ def send(message):
     setup()
     start_queue()
     send_message(message)
-    close_connection()
+    #  close_connection()
 
 def setup():
     global connection, channel, queue_name
