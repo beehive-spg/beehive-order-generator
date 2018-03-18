@@ -20,7 +20,7 @@ def main():
         logging.info("Starting to generate " + str(amount) +" orders...")
         generator.generate_orders(amount)
     elif (command == 'send'):
-        logging.info("Sending" + str(amount) + " orders from file...")
+        logging.info("Sending " + str(amount) + " orders from file...")
         while (True):
             operator.send_orders_from_file(amount)
 

@@ -3,8 +3,7 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-apiKeyMichi = "AIzaSyB_Ld9ROBJON_kx9QoW8tCyoUVDpFPuWwI"
-apiKey = "AIzaSyCseWsBGzArQUI2a6EPtywN8QKaAtjHDPo"
+apiKey = os.getenv("GOOGLE_API_KEY")
 
 def get_address(lon, lat):
 	address_response = requests.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(lat) + ","+ str(lon) +"&key=" + apiKey)
@@ -33,5 +32,5 @@ def post_customer(customer):
     return customer_response.json()
 
 def url(route):
-    host = os.getenv('DBURL')
+    host = os.getenv('DATABASE_URL')
     return host + route

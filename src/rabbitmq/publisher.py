@@ -18,13 +18,12 @@ def send(message):
 
 def setup():
     global connection, channel, queue_name
-    url = os.environ.get('CLOUDAMQP_URL', os.environ['CLOUDAMQPURL'])
+    url = os.getenv("RABBITMQ_URL")
     params = pika.URLParameters(url)
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
-    queue_name = os.environ.get('ORDER_QUEUE', os.environ['ORDERQ'])
+    queue_name = os.getenv("ORDER_QUEUE")
     logging.info("setup of publisher completed")
-    start_queue()
 
 def start_queue():
     channel.queue_declare(queue=queue_name, durable=True)

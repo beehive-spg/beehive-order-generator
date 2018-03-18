@@ -81,8 +81,10 @@ def create_customer(customer, l):
         order['from'] = str(l[3])
         logging.info("New Customer: " + str(new_customer.to_primitive()))
         order['to'] = str(new_customer.customer[0].id)
+        print(json.dumps(order))
         publisher.send_message(json.dumps(order))
-    except:
+    except Exception as e:
+        logging.info(e)
         logging.info("post crashed")
         logging.info("tried to send customer: ")
         logging.info(customer.to_primitive())
