@@ -28,6 +28,7 @@ def post_customer(customer):
     postcustomer['address'] = customer.address
     postcustomer['xcoord'] = customer.xcoord
     postcustomer['ycoord'] = customer.ycoord
+    print("trying to create customer: " + str(postcustomer))
     customer_response = requests.post(url("/customers"), data=json.dumps(postcustomer), headers = {'content-type': 'application/json'})
     return customer_response.json()
 

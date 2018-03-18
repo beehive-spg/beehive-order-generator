@@ -11,7 +11,7 @@ def is_reachable(lon, lat):
     return False
 
 def is_in_range(a, b, maxdistance):
-    return get_distance(a, b) < maxdistance
+    return get_distance(a, b) < get_maxdistance()
 
 def get_distance(a, b):
     return vincenty(a, b).km

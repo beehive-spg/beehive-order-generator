@@ -65,6 +65,8 @@ def send_orders_from_file(amount):
                 customer = domainservice.get_customerdomain_by_attributes(generator.get_random_names(1)[0], l[0], float(l[1]), float(l[2]))
                 create_customer(customer, l)
                 time.sleep(random.randint(4, 8))
+            else:
+                publisher.setup()
             if (iteration%30 == 0 and iteration > 0):
                 time.sleep(30)
     file.close()
@@ -79,12 +81,8 @@ def create_customer(customer, l):
         order['from'] = str(l[3])
         logging.info("New Customer: " + str(new_customer.to_primitive()))
         order['to'] = str(new_customer.customer[0].id)
-        publisher.send(json.dumps(order))
+        publisher.send_message(json.dumps(order))
     except:
         logging.info("post crashed")
         logging.info("tried to send customer: ")
         logging.info(customer.to_primitive())
-        time.sleep(4)
-        logging.info("retry to send customer: ")
-        logging.info(customer.to_primitive())
-        #  create_customer(customer, l)

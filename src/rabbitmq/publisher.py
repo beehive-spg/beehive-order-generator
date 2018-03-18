@@ -8,10 +8,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO,
     format='%(asctime)s - %(levelname)-5s - %(message)s')
 
 def send(message):
-    setup()
-    start_queue()
+    try:
+      test = channel
+    except NameError:
+      logging.info("Start publisher for the first time.")
+      setup()
+      start_queue()
     send_message(message)
-    #  close_connection()
 
 def setup():
     global connection, channel, queue_name
@@ -21,6 +24,7 @@ def setup():
     channel = connection.channel()
     queue_name = os.environ.get('ORDER_QUEUE', os.environ['ORDERQ'])
     logging.info("setup of publisher completed")
+    start_queue()
 
 def start_queue():
     channel.queue_declare(queue=queue_name, durable=True)
