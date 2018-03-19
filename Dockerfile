@@ -1,13 +1,21 @@
-FROM node:latest
+FROM python:3-alpine
 
 WORKDIR /app
 
-COPY package.json .
+COPY requirements.txt .
 
-RUN npm install --production
+RUN pip3 install -r requirements.txt
 
-COPY ./lib .
+COPY src .
 
-RUN ls
+ARG google_api_key
+ARG order_queue
+ARG rabbitmq
+ARG database
 
-CMD node index.js
+ENV GOOGLE_API_KEY=$google_api_key
+ENV ORDER_QUEUE=$order_queue
+ENV RABBITMQ_URL=$rabbitmq
+ENV DATABASE_URL=$database
+
+CMD python3 order-generator.py send 100 20
