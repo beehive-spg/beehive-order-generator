@@ -14,9 +14,6 @@ def main():
     command = sys.argv[1]
     amount = int(sys.argv[2])
     drones_per_hive = int(sys.argv[3])
-    logging.info(command)
-    logging.info(amount)
-    logging.info(drones_per_hive)
     try:
         time.sleep(int(sys.argv[4]))
     except:
