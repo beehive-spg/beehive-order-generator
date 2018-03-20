@@ -18,4 +18,4 @@ ENV ORDER_QUEUE=$order_queue
 ENV RABBITMQ_URL=$rabbitmq
 ENV DATABASE_URL=$database
 
-CMD python3 order-generator.py send 100 20
+CMD python3 order-generator.py send 500 7 20
