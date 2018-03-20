@@ -21,6 +21,10 @@ def get_drone_types_json():
     types = requests.get(url("/types"))
     return types.json()
 
+def post_give_drones(amount):
+    response =requests.post(url("/api/givedrones/{}".format(amount)))
+    return response.status_code
+
 def post_customer(customer):
     postcustomer = dict()
     postcustomer['name'] = customer.customer[0].name
