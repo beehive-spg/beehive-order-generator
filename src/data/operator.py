@@ -60,8 +60,6 @@ def send_orders_from_file(amount):
             if (iteration != 0):
                 l = line.split("\t")
                 l[3] = l[3].strip("\n")
-                logging.info("file content:")
-                logging.info(str(l))
                 customer = domainservice.get_customerdomain_by_attributes(generator.get_random_names(1)[0], l[0], float(l[1]), float(l[2]))
                 create_customer(customer, l)
                 time.sleep(random.randint(4, 8))
@@ -74,14 +72,9 @@ def send_orders_from_file(amount):
 def create_customer(customer, l):
     try:
         new_customer = domainservice.get_customerdomain(rest.post_customer(customer))
-        logging.info("customer")
-        logging.info(new_customer)
-
         order = dict()
         order['from'] = str(l[3])
-        logging.info("New Customer: " + str(new_customer.to_primitive()))
         order['to'] = str(new_customer.customer[0].id)
-        print(json.dumps(order))
         publisher.send_message(json.dumps(order))
     except Exception as e:
         logging.info(e)

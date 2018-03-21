@@ -2,6 +2,7 @@
 import sys, logging, time
 from data import generator, operator
 from data import rest
+from requests.exceptions import ConnectionError
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO,
     format='%(asctime)s - %(levelname)-5s - %(message)s')
@@ -23,11 +24,15 @@ def main():
         generator.generate_orders(amount)
     elif (command == 'send'):
         while (True):
-            status = rest.post_give_drones(drones_per_hive)
-            logging.info(status)
-            if(status == 204):
-                break
-            time.sleep(5)
+            try:
+                status = rest.post_give_drones(drones_per_hive)
+                if(status == 204):
+                    break
+                time.sleep(5)
+            except ConnectionError as conex:
+                logging.warning(conex)
+                logging.warning("Retrying database connection")
+                time.sleep(5)
         logging.info("Sending " + str(amount) + " orders from file...")
         while (True):
             operator.send_orders_from_file(amount)

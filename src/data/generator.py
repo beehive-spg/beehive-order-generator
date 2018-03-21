@@ -17,9 +17,6 @@ def get_orders(amount, locations):
 
     orders = []
     for i in range(0, amount):
-        print(locations[0][i])
-        print(locations[1][i])
-        print(locations[2][i])
         customer = domainservice.get_customerdomain_by_attributes(names[i], locations[0][i], locations[1][i], locations[2][i])
         customer = domainservice.get_customerdomain(rest.post_customer(customer))
         _to = customer
