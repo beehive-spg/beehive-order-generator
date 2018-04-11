@@ -4,3 +4,4 @@ python-dotenv==0.7.1
 Faker==0.8.11
 pika==0.11.2
 geopy==1.11.0
+aio-pika==2.3.0

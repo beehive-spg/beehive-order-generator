@@ -32,7 +32,10 @@ def post_customer(customer):
     postcustomer['xcoord'] = customer.xcoord
     postcustomer['ycoord'] = customer.ycoord
     print("trying to create customer: " + str(postcustomer))
-    customer_response = requests.post(url("/customers"), data=json.dumps(postcustomer), headers = {'content-type': 'application/json'})
+    try:
+        customer_response = requests.post(url("/customers"), data=json.dumps(postcustomer), headers = {'content-type': 'application/json'})
+    except:
+        print("could add")
     return customer_response.json()
 
 def url(route):

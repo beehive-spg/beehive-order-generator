@@ -1,4 +1,5 @@
 import sys, logging, json, time, random
+from multiprocessing import Process, Pipe
 from data import generator, rest
 from rabbitmq import publisher
 from service import domainservice
@@ -52,24 +53,33 @@ def append_orders(orders):
         file.write(CONTENT)
     logging.info("Appended to file " + ORDERFILE + " " + str(len(orders)) + " new orders.")
 
-def send_orders_from_file(amount):
+def send_orders_from_file(drones_per_minute, receiving_connection):
     with open(ORDERFILE, 'r') as file:
         for iteration, line in enumerate(file):
-            if (iteration-1 == amount):
-                    break
-            if (iteration != 0):
-                l = line.split("\t")
-                l[3] = l[3].strip("\n")
-                logging.info("file content:")
-                logging.info(str(l))
-                customer = domainservice.get_customerdomain_by_attributes(generator.get_random_names(1)[0], l[0], float(l[1]), float(l[2]))
-                create_customer(customer, l)
-                time.sleep(random.randint(4, 8))
-            else:
-                publisher.setup()
-            if (iteration%30 == 0 and iteration > 0):
-                time.sleep(30)
+            if (receiving_connection.poll() == True):
+                drones_per_minute = receiving_connection.recv()
+                logging.info("------------changed: {}".format(drones_per_minute))
+            while(drones_per_minute == 0):
+                logging.info("Order Generator stopped")
+                time.sleep(10)
+                if (receiving_connection.poll() == True):
+                    drones_per_minute = receiving_connection.recv()
+                    logging.info("------------changed: {}".format(drones_per_minute))
+            logging.info("drones per minute: ".format(drones_per_minute))
+            send_order(drones_per_minute, iteration, line)
     file.close()
+
+def send_order(drones_per_minute, iteration, line):
+    if (iteration != 0):
+        l = line.split("\t")
+        l[3] = l[3].strip("\n")
+        logging.info("file content:")
+        logging.info(str(l))
+        customer = domainservice.get_customerdomain_by_attributes(generator.get_random_names(1)[0], l[0], float(l[1]), float(l[2]))
+        create_customer(customer, l)
+        time.sleep(get_sleep_amount(drones_per_minute))
+    else:
+        publisher.setup()
 
 def create_customer(customer, l):
     try:
@@ -88,3 +98,6 @@ def create_customer(customer, l):
         logging.info("post crashed")
         logging.info("tried to send customer: ")
         logging.info(customer.to_primitive())
+
+def get_sleep_amount(drones_per_minute):
+    return 60 / drones_per_minute
